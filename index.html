@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Easy Money｜簡單記帳本</title>
+<style>
+:root{font-family:system-ui,-apple-system,'Noto Sans TC',sans-serif;color:#1b3440;background:#f3f7f7;font-synthesis:none}*{box-sizing:border-box}body{margin:0}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}.wrap{max-width:1100px;margin:auto;padding:28px 18px 72px}header,.row,.headrow{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}h1{margin:0;font-size:26px}h2{margin:0 0 16px;font-size:19px}p{margin:5px 0;color:#648087}.muted{color:#68818a}.small{font-size:13px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.layout{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px}.card{background:white;border-radius:18px;padding:20px;box-shadow:0 4px 22px #1f48570b;border:1px solid #e5eeee}.stat strong{font-size:27px;display:block;margin-top:10px;overflow-wrap:anywhere}.green{color:#138665}.red{color:#d55d60}.primary{background:#087e73;color:white;border:1px solid #087e73}.secondary{background:#e8f3f1;color:#176d65;border:1px solid #cce6e1}.ghost{background:white;color:#37616b;border:1px solid #dae7e9}.danger{color:#bb4047;border-color:#f1cbd0}button{border-radius:11px;padding:10px 15px;border:1px solid transparent;transition:filter .15s}button:hover:not(:disabled){filter:brightness(.96)}input,select,textarea{width:100%;border:1px solid #cfdee1;padding:10px 12px;border-radius:10px;background:white;color:#203842;min-height:43px}label{display:block;font-size:13px;font-weight:650;margin-bottom:5px;color:#41616b}.field{margin-bottom:13px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.pills{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 18px}.pill{padding:9px 12px;background:#f2f7f6;border:1px solid #dce9e7;color:#27535a}.pill.active{background:#087e73;color:white}.pill small{display:block;opacity:.75;font-size:11px}.amountHint{font-size:12px;color:#46776e;line-height:1.5;margin-top:5px;min-height:18px}.progress{height:13px;background:#e7eeee;border-radius:20px;overflow:hidden;margin:16px 0 9px}.progress span{height:100%;display:block;width:0;background:#20a18c}.budgetDetails{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.warn{color:#b66a14}.alert{color:#c44b55}.barrow{margin:13px 0}.barlabel{display:flex;justify-content:space-between;gap:10px;font-size:13px}.track{height:10px;background:#edf2f3;border-radius:20px;margin-top:7px;overflow:hidden}.fill{height:100%;background:#1f9f93;border-radius:20px}.record{display:flex;gap:12px;align-items:center;justify-content:space-between;border-top:1px solid #ecf1f2;padding:13px 0}.record .info{flex:1;min-width:0}.record .actions{display:flex;gap:5px}.record .actions button{padding:6px 9px;font-size:12px}.amount{font-weight:750;white-space:nowrap}.hint{border-radius:11px;background:#eff8f5;color:#387167;padding:11px 13px;font-size:13px;margin-top:12px}.topbuttons{display:flex;gap:8px;flex-wrap:wrap}.filter{display:flex;align-items:center;gap:7px}.filter input{width:160px}.monthFilter{padding:7px 9px;border:1px solid #c9e5df;background:#eff9f6;border-radius:13px}.monthFilter button{padding:7px 12px;font-size:18px;line-height:1}.monthFilter input{width:185px;flex:0 0 185px}.monthFilter label{white-space:nowrap}@media(max-width:420px){.monthFilter label{display:none}.monthFilter input{width:175px;flex-basis:175px}}.jumpnav{display:flex;gap:9px;flex-wrap:wrap;margin:18px 0 8px}.jumpnav a{border:1px solid #d4e8e4;background:#fff;border-radius:10px;padding:9px 13px;color:#245d60;text-decoration:none;font-size:14px;font-weight:650}.jumpnav a:hover,.jumpnav a:focus-visible{background:#e8f4f1;outline-color:#70d8c5}.sectionIntro{font-size:13px;color:#6c8489;margin:-4px 0 14px}.anchorSection{scroll-margin-top:15px}.modalLayer{position:fixed;inset:0;background:#16323b85;display:none;align-items:center;justify-content:center;padding:15px;z-index:30}.modalLayer.show{display:flex}.modal{background:#fff;border-radius:18px;padding:22px;width:min(570px,100%);max-height:90vh;overflow:auto}.modal .item{border:1px solid #e6eeee;border-radius:10px;padding:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;margin:7px 0}.modal .item button{padding:6px 8px;font-size:12px}.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.empty{padding:22px;text-align:center;background:#f6fafa;border-radius:12px;color:#789198}footer{text-align:center;color:#8ba0a6;font-size:12px;margin-top:30px}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #70d8c5;outline-offset:2px}@media(max-width:760px){.grid,.layout{grid-template-columns:1fr}.wrap{padding:16px 12px 45px}.stat strong{font-size:24px}.card{padding:16px}.record{flex-wrap:wrap}.record .actions{width:100%;justify-content:flex-end}.filter input{width:145px}}
+
+/* 每月支出圓餅圖：原生 SVG，不需外部套件 */
+.monthlyChartTitle{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:2px 0 13px}
+.monthlyChartTitle h3{font-size:16px;margin:0;color:#23464d}
+.monthlyChartTitle .small{color:#70888e}
+.pieLayout{display:grid;grid-template-columns:minmax(210px,280px) minmax(0,1fr);align-items:center;gap:24px;padding:16px 18px;background:#f7fbfa;border:1px solid #e5efee;border-radius:16px;margin-bottom:22px}
+.pieGraphic{display:flex;justify-content:center;align-items:center;min-width:0}
+.pieGraphic svg{width:100%;max-width:260px;height:auto;display:block;filter:drop-shadow(0 5px 10px #19474b0d)}
+.pieGraphic svg path{stroke:#fff;stroke-width:1.7;stroke-linejoin:round;transition:opacity .15s,filter .15s}
+.pieGraphic svg path:hover{opacity:.87;filter:brightness(1.06)}
+.pieLegend{display:grid;gap:9px;min-width:0}
+.pieLegendRow{display:grid;grid-template-columns:12px minmax(0,1fr) auto;align-items:center;gap:10px;border-bottom:1px solid #e4eeeb;padding:5px 0 9px;font-size:14px}
+.pieLegendRow:last-child{border-bottom:0}
+.legendSwatch{width:12px;height:12px;border-radius:4px;display:inline-block}
+.pieLegendRow strong{min-width:0;overflow-wrap:anywhere;font-size:14px}
+.pieLegendValue{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.pieLegendValue span{color:#687f85;font-size:12px;display:block;margin-top:2px}
+.barChartTitle{font-size:15px;margin:20px 0 10px;color:#23464d}
+@media(max-width:650px){.pieLayout{grid-template-columns:1fr;gap:12px;padding:16px 12px}.pieGraphic svg{max-width:235px}.pieLegend{gap:5px}.pieLegendRow{font-size:13px}.pieLegendValue{font-size:13px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header><div><h1>💰 Easy Money</h1><p>少打字，多掌握每一筆收支</p></div><div class="topbuttons"><button class="ghost" id="tagManager">管理標籤</button><button class="ghost" id="dataManager">資料備份</button></div></header>
+<nav class="jumpnav" aria-label="快速前往功能區"><a href="#overview">📊 收支總覽</a><a href="#quick-entry">✍️ 快速記帳</a><a href="#analysis">📈 分類圖表</a><a href="#transactions">📋 交易明細</a></nav>
+<div class="headrow anchorSection" id="overview" style="margin:23px 0 14px"><h2 style="margin:0">📊 收支總覽</h2><div class="filter monthFilter"><button class="ghost" id="prevMonth" type="button" aria-label="上一個月">‹</button><label for="month" style="margin:0">統計月份</label><input type="month" id="month" aria-label="選擇統計年月"><button class="ghost" id="nextMonth" type="button" aria-label="下一個月">›</button></div></div>
+<section class="grid" aria-label="每月統計"><div class="card stat"><span class="muted">本月收入</span><strong class="green" id="incomeTotal">NT$0</strong></div><div class="card stat"><span class="muted">本月支出</span><strong class="red" id="expenseTotal">NT$0</strong></div><div class="card stat"><span class="muted">本月結餘</span><strong id="balanceTotal">NT$0</strong></div></section>
+<section class="card" style="margin-top:16px"><div class="headrow"><h2 style="margin:0">每月固定預算</h2><button class="secondary" id="setBudget">設定預算</button></div><div style="margin-top:12px" id="budgetMessage" class="muted">尚未設定預算</div><div class="progress"><span id="budgetBar"></span></div><div class="budgetDetails small"><span id="budgetSpent">已支出 NT$0</span><span id="budgetRemain">本月預算未設定</span></div><div id="budgetAlert" class="small" style="margin-top:10px" role="status"></div></section>
+<div class="layout"><section class="card anchorSection" id="quick-entry"><h2>✍️ 快速記帳</h2><p class="sectionIntro">點選常用標籤，優先帶入上一次記帳金額；若沒有歷史紀錄，才使用標籤預設金額。</p><form id="recordForm"><div class="field"><label for="kind">收支類型</label><select id="kind"><option value="expense">支出</option><option value="income">收入</option></select></div><label>常用標籤（點選快速帶入）</label><div id="tagPills" class="pills"></div><div class="two"><div class="field"><label for="amount">金額（NT$）</label><input id="amount" type="number" min="1" max="999999999999" step="1" required placeholder="例如 120"><div id="amountHint" class="amountHint" role="status" aria-live="polite"></div></div><div class="field"><label for="date">日期</label><input id="date" type="date" required></div></div><div class="field"><label for="note">備註（選填）</label><input id="note" maxlength="300" placeholder="例如：雞腿便當"></div><div class="headrow"><span id="selectedTag" class="small muted">尚未選擇標籤</span><button class="primary" type="submit" id="submitRecord">儲存記帳</button></div></form><div class="hint">點選標籤時，優先使用該標籤上一次儲存的金額（不限月份），其次使用自行設定的預設金額；都沒有才需輸入。更改本次金額不會影響標籤預設設定。</div></section><section class="card anchorSection" id="analysis"><h2>📈 支出分類分析</h2><p class="sectionIntro">依上方所選月份統計各類別支出；新增、修改或刪除記帳後會立即更新。</p><div id="categoryChart" aria-live="polite"></div></section></div>
+<section class="card anchorSection" id="transactions" style="margin-top:16px"><div class="headrow"><h2 style="margin:0">📋 交易明細</h2><span class="small muted" id="recordCount"></span></div><div id="recordList" style="margin-top:15px"></div></section>
+<footer>資料只保存在此瀏覽器，請定期匯出 JSON 備份。清除網站資料或換裝置不會自動同步。</footer>
+</main>
+<div class="modalLayer" id="modalLayer"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="headrow"><h2 id="modalTitle">設定</h2><button class="ghost" id="closeModal" aria-label="關閉">✕</button></div><div id="modalBody"></div></section></div>
+<script>
+(()=>{'use strict';
+const STORE='easy-money-v1',money=n=>'NT$'+Number(n||0).toLocaleString('zh-TW'),today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`},uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random(),$=id=>document.getElementById(id);
+const initialTags=()=>{const groups={expense:{'餐飲':['早餐','午餐','晚餐','飲料','宵夜'],'交通':['加油','停車','公車','捷運'],'購物':['購物','日用品','服飾'],'娛樂':['電影','遊戲','娛樂'],'生活':['房租','水電','電話費'],'其他':['其他支出']},income:{'收入':['薪資','獎金','零用錢','其他收入']}};return Object.entries(groups).flatMap(([type,cats])=>Object.entries(cats).flatMap(([category,names])=>names.map(name=>({id:uid(),type,category,name,preset:null}))))};
+const empty=()=>({version:1,records:[],tags:initialTags(),budgets:[]});let state;let storageGood=true;
+try{const raw=localStorage.getItem(STORE);state=raw?JSON.parse(raw):empty();if(!validState(state))throw Error('saved data invalid')}catch(e){state=empty();storageGood=false;alert('已儲存的資料讀取失敗，為避免覆蓋舊資料，暫停儲存。請先備份或檢查瀏覽器儲存空間。')}
+let currentTagId=null,editId=null,tagEditId=null,lastFocus=null;const currentMonth=today().slice(0,7);$('month').value=currentMonth;$('date').value=today();
+function validState(s){return s&&s.version===1&&Array.isArray(s.records)&&Array.isArray(s.tags)&&Array.isArray(s.budgets)&&s.records.every(r=>typeof r.id==='string'&&['income','expense'].includes(r.type)&&/^\d{4}-\d{2}-\d{2}$/.test(r.date)&&Number.isSafeInteger(r.amount)&&r.amount>0&&typeof r.tag==='string'&&typeof r.category==='string'&&typeof r.note==='string')&&s.tags.every(t=>typeof t.id==='string'&&['income','expense'].includes(t.type)&&typeof t.name==='string'&&t.name.trim()&&typeof t.category==='string'&&(t.preset===null||(Number.isSafeInteger(t.preset)&&t.preset>0)))&&s.budgets.every(b=>/^\d{4}-\d{2}$/.test(b.month)&&Number.isSafeInteger(b.amount)&&b.amount>0)}
+function save(next){if(!storageGood){alert('目前瀏覽器資料保存功能不可用，尚未儲存。');return false}try{localStorage.setItem(STORE,JSON.stringify(next));state=next;return true}catch(e){alert('儲存失敗，資料未變更。可能是瀏覽器空間不足，請檢查儲存設定。');return false}}
+function escapeHTML(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function monthBudget(month){let matched=null;for(const b of state.budgets)if(b.month<=month&&(!matched||b.month>matched.month))matched=b;return matched?matched.amount:null}
+function render(){const month=$('month').value,records=state.records.filter(r=>r.date.slice(0,7)===month),inc=records.filter(r=>r.type==='income').reduce((s,r)=>s+r.amount,0),exp=records.filter(r=>r.type==='expense').reduce((s,r)=>s+r.amount,0);$('incomeTotal').textContent=money(inc);$('expenseTotal').textContent=money(exp);$('balanceTotal').textContent=money(inc-exp);$('balanceTotal').className=inc-exp<0?'red':'';const budget=monthBudget(month);$('budgetSpent').textContent='已支出 '+money(exp);$('budgetRemain').textContent=budget===null?'本月預算未設定':`預算 ${money(budget)}｜剩餘 ${money(budget-exp)}`;$('budgetMessage').textContent=budget===null?'尚未設定此月份預算':'預算使用率 '+(exp/budget*100).toFixed(1)+'%';const pct=budget===null?0:exp/budget*100;$('budgetBar').style.width=Math.min(100,pct)+'%';$('budgetBar').style.background=pct>=100?'#d55d60':pct>=80?'#d99a39':'#20a18c';$('budgetAlert').textContent=budget===null?'':pct>=100?(pct>100?'已超出本月預算':'本月預算已用完'):pct>=80?'已使用超過 80% 的月預算，請留意後續支出。':'';$('budgetAlert').className=pct>=100?'alert small':pct>=80?'warn small':'small';
+const categories={};for(const r of records)if(r.type==='expense')categories[r.category]=(categories[r.category]||0)+r.amount;
+renderCategoryAnalysis(categories,exp,month);
+records.sort((a,b)=>b.date.localeCompare(a.date)||(b.createdAt||'').localeCompare(a.createdAt||''));$('recordCount').textContent=records.length+' 筆紀錄';const list=$('recordList');list.replaceChildren();if(!records.length)list.innerHTML='<div class="empty">這個月還沒有記帳，從上方新增第一筆吧！</div>';for(const r of records){let el=document.createElement('div');el.className='record';el.innerHTML=`<div class="info"><strong>${escapeHTML(r.tag)}</strong><div class="small muted">${escapeHTML(r.date)} · ${r.type==='expense'?'支出':'收入'} · ${escapeHTML(r.category)}${r.note?' · '+escapeHTML(r.note):''}</div></div><span class="amount ${r.type==='expense'?'red':'green'}">${r.type==='expense'?'−':'＋'}${money(r.amount)}</span><div class="actions"><button class="ghost" data-edit="${escapeHTML(r.id)}">編輯</button><button class="ghost danger" data-delete="${escapeHTML(r.id)}">刪除</button></div>`;list.append(el)}renderTags()}
+// 所有圖表共用上方選擇的月份；新增、編輯、刪除時會透過 render() 自動重繪。
+const pieColors={'餐飲':'#259d88','交通':'#5b88d4','購物':'#de9b50','娛樂':'#996ed0','生活':'#d96683','其他':'#6e9f9c'};
+const otherPieColors=['#5b9dba','#c28661','#a88d50','#957eb5','#6c9b70','#ad708d'];
+function categoryColor(category){
+  if(Object.prototype.hasOwnProperty.call(pieColors,category))return pieColors[category];
+  let hash=0;for(const char of category)hash=(hash*31+char.codePointAt(0))>>>0;
+  return otherPieColors[hash%otherPieColors.length];
+}
+function renderCategoryAnalysis(categories,total,month){
+  const chart=$('categoryChart');chart.replaceChildren();
+  if(!total){chart.innerHTML='<div class="empty">這個月還沒有支出紀錄。先在上方「快速記帳」新增一筆支出，這裡就會顯示當月圓餅圖與分類長條圖。</div>';return}
+  const entries=Object.entries(categories).sort((a,b)=>b[1]-a[1]);
+  const heading=document.createElement('div');heading.className='monthlyChartTitle';
+  const title=document.createElement('h3');const [year,mm]=month.split('-');title.textContent=`🥧 ${year} 年 ${Number(mm)} 月支出圓餅圖`;
+  const totalLabel=document.createElement('span');totalLabel.className='small';totalLabel.textContent='本月總支出 '+money(total);
+  heading.append(title,totalLabel);chart.append(heading);
+  const layout=document.createElement('div');layout.className='pieLayout';
+  const graphic=document.createElement('div');graphic.className='pieGraphic';
+  const ns='http://www.w3.org/2000/svg';const svg=document.createElementNS(ns,'svg');
+  svg.setAttribute('viewBox','0 0 260 260');svg.setAttribute('role','img');
+  svg.setAttribute('aria-label',`${year} 年 ${Number(mm)} 月支出分類圓餅圖；總支出 ${money(total)}。${entries.map(([c,v])=>`${c} ${money(v)}，占 ${(v/total*100).toFixed(1)}%`).join('；')}`);
+  const cx=130,cy=130,r=118;let angle=-Math.PI/2;
+  for(const [category,sum] of entries){
+    const frac=sum/total,color=categoryColor(category);let part;
+    if(entries.length===1){part=document.createElementNS(ns,'circle');part.setAttribute('cx',cx);part.setAttribute('cy',cy);part.setAttribute('r',r)}
+    else{
+      const next=angle+frac*Math.PI*2,offset=0;
+      const x1=cx+r*Math.cos(angle+offset),y1=cy+r*Math.sin(angle+offset);
+      const x2=cx+r*Math.cos(next),y2=cy+r*Math.sin(next);
+      part=document.createElementNS(ns,'path');part.setAttribute('d',`M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${frac>.5?1:0} 1 ${x2} ${y2} Z`);
+      angle=next;
+    }
+    part.setAttribute('fill',color);
+    const tooltip=document.createElementNS(ns,'title');tooltip.textContent=`${category}：${money(sum)}（${(frac*100).toFixed(1)}%）`;
+    part.append(tooltip);svg.append(part);
+  }
+  graphic.append(svg);
+  const legend=document.createElement('div');legend.className='pieLegend';legend.setAttribute('aria-label','圓餅圖分類明細');
+  for(const [category,sum] of entries){
+    const item=document.createElement('div');item.className='pieLegendRow';
+    const swatch=document.createElement('span');swatch.className='legendSwatch';swatch.style.background=categoryColor(category);
+    const name=document.createElement('strong');name.textContent=category;
+    const value=document.createElement('div');value.className='pieLegendValue';value.append(document.createTextNode(money(sum)));
+    const percent=document.createElement('span');percent.textContent=(sum/total*100).toFixed(1)+'%';value.append(percent);
+    item.append(swatch,name,value);legend.append(item);
+  }
+  layout.append(graphic,legend);chart.append(layout);
+  const subTitle=document.createElement('h3');subTitle.className='barChartTitle';subTitle.textContent='各分類金額比較';chart.append(subTitle);
+  for(const [category,sum] of entries){
+    const row=document.createElement('div');row.className='barrow';
+    const label=document.createElement('div');label.className='barlabel';
+    const name=document.createElement('strong');name.textContent=category;
+    const value=document.createElement('span');value.textContent=`${money(sum)}（${(sum/total*100).toFixed(1)}%）`;
+    label.append(name,value);
+    const track=document.createElement('div');track.className='track';
+    const fill=document.createElement('div');fill.className='fill';fill.style.width=Math.min(sum/total*100,100)+'%';fill.style.background=categoryColor(category);
+    track.append(fill);row.append(label,track);chart.append(row);
+  }
+}
+// 從所有月份取出同類型、同名稱標籤「最後儲存」的交易；可相容既有記帳與 JSON 備份。
+// 以建立時間判斷最後記帳，而非交易日期（交易日期可能被手動回填）。
+function lastSavedRecord(tag){
+  let found=null,foundIndex=-1;
+  for(let i=0;i<state.records.length;i++){
+    const r=state.records[i];
+    if(r.type!==tag.type||r.tag!==tag.name)continue;
+    const stamp=r.createdAt||'',prior=found?.createdAt||'';
+    if(!found||stamp>prior||(stamp===prior&&i>foundIndex)){
+      found=r;foundIndex=i;
+    }
+  }
+  return found;
+}
+function renderTags(){
+  const list=$('tagPills');list.replaceChildren();const type=$('kind').value;
+  for(const t of state.tags.filter(x=>x.type===type)){
+    const b=document.createElement('button');b.type='button';
+    b.className='pill'+(currentTagId===t.id?' active':'');b.textContent=t.name;
+    b.onclick=()=>{
+      currentTagId=t.id;
+      const previous=lastSavedRecord(t);
+      // 以歷史記帳金額為優先；未曾使用時才套用手動設定的預設金額。
+      const value=previous?previous.amount:t.preset;
+      $('amount').value=value??''; // 空標籤要清除前一個標籤的金額
+      $('amountHint').textContent=previous
+        ?`上次記帳：${money(previous.amount)}（已自動帶入，可修改）`
+        :t.preset!==null
+          ?`標籤預設：${money(t.preset)}（已自動帶入，可修改）`
+          :'尚無上次記帳或預設金額，請輸入本次金額。';
+      $('selectedTag').textContent=t.name+' · '+t.category;
+      renderTags();
+    };
+    list.append(b);
+  }
+  if(!currentTagId)$('selectedTag').textContent='請選擇標籤';
+}
+$('kind').onchange=()=>{currentTagId=null;$('amount').value='';$('amountHint').textContent='';renderTags()};$('month').onchange=render;function changeMonth(offset){const [year,month]=$('month').value.split('-').map(Number);const d=new Date(year,month-1+offset,1);$('month').value=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;render()}$('prevMonth').onclick=()=>changeMonth(-1);$('nextMonth').onclick=()=>changeMonth(1);
+$('recordForm').onsubmit=e=>{e.preventDefault();const amt=Number($('amount').value),date=$('date').value,tag=state.tags.find(x=>x.id===currentTagId&&x.type===$('kind').value);if(!tag){alert('請先選擇常用標籤');return}if(!Number.isSafeInteger(amt)||amt<=0||amt>999999999999||!validDate(date)){alert('請輸入有效日期與大於 0 的整數金額');return}const rec={id:uid(),type:tag.type,amount:amt,date,tag:tag.name,category:tag.category,note:$('note').value.trim(),createdAt:new Date().toISOString()};if(save({...state,records:[...state.records,rec]})){$('month').value=date.slice(0,7);$('amount').value='';$('amountHint').textContent='';$('note').value='';currentTagId=null;render()}};
+function validDate(s){if(!/^\d{4}-\d{2}-\d{2}$/.test(s))return false;const [y,m,d]=s.split('-').map(Number),dt=new Date(y,m-1,d);return dt.getFullYear()===y&&dt.getMonth()===m-1&&dt.getDate()===d}
+function openModal(title,html){lastFocus=document.activeElement;$('modalTitle').textContent=title;$('modalBody').innerHTML=html;$('modalLayer').classList.add('show');$('closeModal').focus()}
+function closeModal(){$('modalLayer').classList.remove('show');$('modalBody').replaceChildren();if(lastFocus?.focus)lastFocus.focus()};$('closeModal').onclick=closeModal;$('modalLayer').onclick=e=>{if(e.target===$('modalLayer'))closeModal()};document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('modalLayer').classList.contains('show'))closeModal()});
+$('setBudget').onclick=()=>{let b=monthBudget(currentMonth);openModal('設定固定每月預算',`<p class="small">新額度從目前月份起生效，過去月份不受影響。</p><form id="budgetForm"><div class="field"><label for="budgetInput">每月預算（NT$）</label><input id="budgetInput" type="number" min="1" max="999999999999" step="1" required value="${b??''}" placeholder="例如 10000"></div><button class="primary">儲存預算</button></form>`);$('budgetForm').onsubmit=e=>{e.preventDefault();const n=Number($('budgetInput').value);if(!Number.isSafeInteger(n)||n<=0||n>999999999999){alert('請輸入大於 0 的整數');return}const months=state.budgets.filter(x=>x.month!==currentMonth);if(save({...state,budgets:[...months,{month:currentMonth,amount:n}].sort((a,b)=>a.month.localeCompare(b.month))})){closeModal();render()}}};
+function tagManager(){tagEditId=null;openModal('管理常用標籤',`<p class="small">可新增標籤及預設金額，歷史記帳不會因更改標籤而被修改。</p><form id="tagForm"><div class="two"><div class="field"><label for="tagType">類型</label><select id="tagType"><option value="expense">支出</option><option value="income">收入</option></select></div><div class="field"><label for="tagCategory">分類</label><select id="tagCategory"></select></div></div><div class="two"><div class="field"><label for="tagName">標籤名稱</label><input id="tagName" maxlength="25" required placeholder="例如：咖啡"></div><div class="field"><label for="tagPreset">預設金額（可留空）</label><input id="tagPreset" type="number" min="1" max="999999999999" step="1"></div></div><div class="btns"><button class="primary" id="saveTag">新增標籤</button><button type="button" class="ghost" id="resetTag" hidden>取消編輯</button></div></form><h3>現有標籤</h3><div id="tagItems"></div>`);$('tagType').onchange=()=>setCategories();setCategories();$('tagForm').onsubmit=e=>{e.preventDefault();const type=$('tagType').value,name=$('tagName').value.trim(),category=$('tagCategory').value,pval=$('tagPreset').value,preset=pval===''?null:Number(pval);if(!name||!category||(preset!==null&&(!Number.isSafeInteger(preset)||preset<=0||preset>999999999999))){alert('請檢查標籤資料');return}if(state.tags.some(t=>t.type===type&&t.name.trim()===name&&t.id!==tagEditId)){alert('同一收支類型不可建立重複標籤');return}const t={id:tagEditId||uid(),type,name,category,preset};let tags=tagEditId?state.tags.map(x=>x.id===tagEditId?t:x):[...state.tags,t];if(save({...state,tags})){tagEditId=null;resetTagForm();renderTagItems();renderTags()}};$('resetTag').onclick=resetTagForm;renderTagItems()}
+function setCategories(value){const opts=$('tagType').value==='income'?['收入']:['餐飲','交通','購物','娛樂','生活','其他'];$('tagCategory').innerHTML=opts.map(x=>`<option value="${x}">${x}</option>`).join('');if(value&&opts.includes(value))$('tagCategory').value=value}
+function resetTagForm(){tagEditId=null;$('tagForm').reset();setCategories();$('saveTag').textContent='新增標籤';$('resetTag').hidden=true}
+function renderTagItems(){const box=$('tagItems');box.replaceChildren();for(const t of state.tags){const row=document.createElement('div');row.className='item';const name=document.createElement('span');name.className='small';name.textContent=`${t.type==='expense'?'支出':'收入'} / ${t.category} / ${t.name} / ${t.preset===null?'無預設金額':money(t.preset)}`;const btns=document.createElement('div');btns.className='btns';btns.style.margin=0;const edit=document.createElement('button');edit.className='ghost';edit.textContent='編輯';edit.onclick=()=>{tagEditId=t.id;$('tagType').value=t.type;setCategories(t.category);$('tagName').value=t.name;$('tagPreset').value=t.preset??'';$('saveTag').textContent='儲存修改';$('resetTag').hidden=false;$('tagName').focus()};const del=document.createElement('button');del.className='ghost danger';del.textContent='刪除';del.onclick=()=>{if(!confirm(`確定刪除「${t.name}」標籤？歷史交易將保留。`))return;if(save({...state,tags:state.tags.filter(x=>x.id!==t.id)})){if(currentTagId===t.id)currentTagId=null;if(tagEditId===t.id)resetTagForm();renderTagItems();renderTags()}};btns.append(edit,del);row.append(name,btns);box.append(row)}}$('tagManager').onclick=tagManager;
+$('recordList').onclick=e=>{const edit=e.target.closest('[data-edit]'),del=e.target.closest('[data-delete]');if(del){const r=state.records.find(x=>x.id===del.dataset.delete);if(r&&confirm(`確定刪除 ${r.date}「${r.tag}」${money(r.amount)}？`)){if(save({...state,records:state.records.filter(x=>x.id!==r.id)}))render()}return}if(edit){const r=state.records.find(x=>x.id===edit.dataset.edit);if(!r)return;editId=r.id;openModal('編輯交易',`<form id="editForm"><div class="two"><div class="field"><label for="editType">類型</label><select id="editType"><option value="expense">支出</option><option value="income">收入</option></select></div><div class="field"><label for="editDate">日期</label><input id="editDate" type="date" required></div></div><div class="two"><div class="field"><label for="editCategory">分類</label><input id="editCategory" required maxlength="40"></div><div class="field"><label for="editTag">用途標籤</label><input id="editTag" required maxlength="40"></div></div><div class="field"><label for="editAmount">金額</label><input id="editAmount" type="number" min="1" max="999999999999" step="1" required></div><div class="field"><label for="editNote">備註</label><input id="editNote" maxlength="300"></div><button class="primary">儲存修改</button></form>`);$('editType').value=r.type;$('editDate').value=r.date;$('editCategory').value=r.category;$('editTag').value=r.tag;$('editAmount').value=r.amount;$('editNote').value=r.note;$('editForm').onsubmit=e=>{e.preventDefault();const amount=Number($('editAmount').value),date=$('editDate').value,tag=$('editTag').value.trim(),category=$('editCategory').value.trim();if(!validDate(date)||!Number.isSafeInteger(amount)||amount<=0||amount>999999999999||!tag||!category){alert('請檢查輸入資料');return}const updated={...r,type:$('editType').value,date,amount,tag,category,note:$('editNote').value.trim()};if(save({...state,records:state.records.map(x=>x.id===r.id?updated:x)})){closeModal();render()}}}};
+function download(name,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000)}
+function csvSafe(v){let s=String(v??'');if(/^[\s\t\r\n]*[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
+$('dataManager').onclick=()=>{openModal('資料匯出與備份',`<p>CSV 可用 Excel 查看全部交易；JSON 可以備份及還原交易、標籤和預算。</p><div class="btns"><button class="secondary" id="csvExport">匯出 CSV</button><button class="secondary" id="jsonExport">下載 JSON 備份</button></div><hr style="border:0;border-top:1px solid #e4eeee;margin:20px 0"><label for="jsonFile">從 JSON 備份還原（覆蓋目前所有資料）</label><input id="jsonFile" type="file" accept=".json,application/json"><button class="ghost danger" id="jsonImport" style="margin-top:10px">驗證並還原 JSON</button><p class="small">匯入前會驗證格式並再次詢問確認。建議先下載現有資料備份。</p>`);$('csvExport').onclick=()=>{const rows=[['日期','類型','分類','標籤','金額','備註'],...state.records.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(r=>[r.date,r.type==='expense'?'支出':'收入',r.category,r.tag,r.amount,r.note])];download('easy-money-records.csv','\ufeff'+rows.map(row=>row.map(csvSafe).join(',')).join('\r\n'),'text/csv;charset=utf-8')};$('jsonExport').onclick=()=>download(`easy-money-backup-${today()}.json`,JSON.stringify(state,null,2),'application/json;charset=utf-8');$('jsonImport').onclick=async()=>{const file=$('jsonFile').files?.[0];if(!file){alert('請先選擇 JSON 檔案');return}if(file.size>10*1024*1024){alert('檔案超過 10MB');return}let parsed;try{parsed=JSON.parse(await file.text());if(!validState(parsed))throw Error('schema')}catch(e){alert('JSON 備份無效或格式版本不符，未變更任何資料。');return}if(confirm(`已確認備份格式正確，包含 ${parsed.records.length} 筆交易、${parsed.tags.length} 個標籤。確定覆蓋目前全部資料嗎？`)){if(save(parsed)){currentTagId=null;closeModal();render();alert('資料還原成功')}}}};
+render();
+})();
+</script>
+</body></html>
